@@ -7,12 +7,38 @@ currentDayEl.text(moment().format("LLLL"));
 // Save Button
 var saveBtn = $(".saveBtn");
 
-saveBtn.on("click", function (event) {
-  // function that receives textarea
-  var descriptionValue = $(".description").val();
-  localStorage.setItem("description-input", JSON.stringify(descriptionValue));
-  console.log(descriptionValue);
-  // if/else for colors
+// How to make submit button independent from each event?
+$(document).ready(function () {
+  $(".saveBtn").on("click", function () {
+    // function that receives textarea
+    // Need a if / else statement that only does this under some conditions
 
-  //saves in local storage
+    // if descrption content
+    //saves in local storage
+    var value = $(this).siblings(".description").val();
+    var time = $(this).parent().attr("id");
+
+    localStorage.setItem(time, value);
+
+    function hourUpdated() {
+      //loop over time blocks
+      var currentHour = moment().hours();
+      $(".time-block").each(function () {
+        //check if we have moved to the next hour
+        var blockhour = parseInt($(this).attr("id").split("-")[1]);
+
+        if (blockhour < currentHour) {
+          $(this).addClass("past");
+        } else if (blockhour === currentHour) {
+          $(this).removeClass("past");
+          $(this).addClass("present");
+        } else {
+          $(this).removeClass("present");
+          $(this).removeClass("past");
+          $(this).addClass("future");
+        }
+      });
+    }
+    hourUpdated();
+  });
 });
