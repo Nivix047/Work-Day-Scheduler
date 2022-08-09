@@ -8,7 +8,7 @@ currentDayEl.text(moment().format("LLLL"));
 // Save Button
 var saveBtn = $(".saveBtn");
 
-// How to make submit button independent from each event?
+// $(document).ready() - makes each saveBtn independent from other buttons
 $(document).ready(function () {
   $(".saveBtn").on("click", function () {
     // Value from textarea
@@ -22,16 +22,13 @@ $(document).ready(function () {
   });
 });
 
-// var savedDisplay = localStorage.getItem("hour-9");
-// console.log(savedDisplay);
-
 function hourUpdated() {
   //loop over time blocks
   var currentHour = moment().hours();
   $(timeBlockEl).each(function () {
     //check if we have moved to the next hour
-    // Splits to hour, 9. The [1] is 9
-    var blockhour = parseInt($(this).attr("id").split("-")[1]); // hour-9: [hour, 9] [1,2,3,4,5]
+    // Splits hour "-" 9 // hour-9 -> [hour, 9], 9
+    var blockhour = parseInt($(this).attr("id").split("-")[1]);
     console.log(this);
     console.log(blockhour);
     console.log(currentHour);
@@ -57,3 +54,5 @@ function hourUpdated() {
   });
 }
 hourUpdated();
+// So every 5 seconds it refreshes the hours
+setInterval(hourUpdated(), 5000);
